@@ -3,6 +3,10 @@
     margin-right: 50px;
 }
 
+.seconds { 
+    margin-left: 3px;
+}
+
 .highscoresHeader {
     padding-left: 50px;
 }

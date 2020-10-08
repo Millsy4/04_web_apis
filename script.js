@@ -1,14 +1,122 @@
 var questionArea = document.querySelector("#questionArea");
 var info = document.querySelector("#info");
 var startButton = document.querySelector("#startButton");
-var testing = document.querySelector("#testing");
+var mainInfo = document.querySelector("#mainInfo");
+
+var secondsDisplay = document.querySelector("#seconds");
+
+var questionsCount = 0;
 
 var answersHolderOne = ["adsfaf", "asdfare", "adsfaf", "adsfafa"];
 var answersHolderTwo = ["123424", "42341", "3241834", "432781"];
+var answersHolderThree = ["adsfaf", "42342", "adsfaf", "32414"];
+var answersHolderFour = ["12334", "asdfadfa", "124324", "asdfadfa"];
+var answersHolderFive = ["This", "Is", "A", "Test"];
+
+var aqHolder = [
+  {
+    question: 'Question 1',
+    answers: answersHolderOne,
+    correctAnswer: 2
+  },
+  {
+    question: 'Question 2',
+    answers: answersHolderTwo,
+    correctAnswer: 1
+  },
+  {
+    question: 'Question 3',
+    answers: answersHolderThree,
+    correctAnswer: 3
+  }
+]
+
 
 startButton.addEventListener("click", function(event) {
-    renderQuestionOne();
+  // renderQuestionOne();  
+  renderQuestion();
 })
+
+function renderQuestion() {
+  info.remove();
+  startButton.remove();
+  questionArea.textContent = aqHolder[questionsCount].question;
+  renderAnswers(aqHolder[questionsCount].answers);
+}
+
+function renderAnswers(array) {
+  var ol = document.createElement("ol");
+  mainInfo.appendChild(ol);
+  ol.setAttribute("id", "answerList");
+
+  for (var i = 0; i < array.length; i++) {
+    var answers = array[i];
+
+    var li = document.createElement("li");
+    li.textContent = answers;
+    li.setAttribute("data-index", i);
+    li.setAttribute("style", "text-align: left;")
+
+    answerList.appendChild(li);
+
+  }
+}
+
+mainInfo.addEventListener("click", function(event) {
+  var element = event.target;
+    if (element.matches("li") === true) {
+      var index = element.getAttribute("data-index");
+      console.log(index);
+      if (index == 0) {
+        // var correct = document.createElement("p");
+        // correct.setAttribute("id", "correctOrIncorrectOne");
+        // correct.textContent = "Correct!";
+        // mainInfo.appendChild(correct);
+        setTimeout(correctAnswer(), 1000);
+        questionsCount++;
+        answerList.remove();
+        renderQuestion();
+  
+        
+      } else {
+        incorrectAnswer();
+        questionsCount++;
+        answerList.remove();
+        renderQuestion();
+      
+      }
+    }
+  })
+
+function correctAnswer() {
+  var correct = document.createElement("p");
+  correct.setAttribute("id", "correctOrIncorrect");
+  correct.textContent = "Correct!";
+  mainInfo.appendChild(correct);
+
+}
+
+function incorrectAnswer() {
+  var incorrect = document.createElement("p");
+  incorrect.setAttribute("id", "correctOrIncorrectOne");
+  incorrect.textContent = "Incorrect!";
+  mainInfo.appendChild(incorrect);
+}
+// function renderAnswers() {
+//   for (var i = 0; i < answersHolderOne.length; i++) {
+//     var answers = answersHolderOne[i];
+
+//     var li = document.createElement("li");
+//     li.textContent = answers;
+//     li.setAttribute("data-index", i);
+//     li.setAttribute("style", "text-align: left;")
+
+//     //var button = document.createElement("button");
+//     //button.textContent = "Submit";
+
+//     answerListOne.appendChild(li);
+//   }
+// }
 
 function renderQuestionOne() {
     questionArea.textContent = "Commonly used data types do NOT include:"
@@ -16,8 +124,8 @@ function renderQuestionOne() {
     startButton.setAttribute("style", "visibility: hidden;")
     
     var ol = document.createElement("ol");
-    testing.appendChild(ol);
-    ol.setAttribute("id", "testAgain");
+    mainInfo.appendChild(ol);
+    ol.setAttribute("id", "answerListOne");
 
     // Render a new li for each todo
     for (var i = 0; i < answersHolderOne.length; i++) {
@@ -31,23 +139,25 @@ function renderQuestionOne() {
       //var button = document.createElement("button");
       //button.textContent = "Submit";
   
-      testAgain.appendChild(li);
+      answerListOne.appendChild(li);
     }
 
-    testing.addEventListener("click", function(event) {
+    mainInfo.addEventListener("click", function(event) {
       var element = event.target;
         if (element.matches("li") === true) {
           var index = element.getAttribute("data-index");
           console.log(index);
           if (index == 0) {
             var correct = document.createElement("p");
+            correct.setAttribute("id", "correctOrIncorrectOne");
             correct.textContent = "Correct!";
-            testing.appendChild(correct);
+            mainInfo.appendChild(correct);
             renderQuestionTwo();
           } else {
             var incorrect = document.createElement("p");
+            incorrect.setAttribute("id", "correctOrIncorrectOne");
             incorrect.textContent = "Incorrect!";
-            testing.appendChild(incorrect);
+            mainInfo.appendChild(incorrect);
             renderQuestionTwo();
           }
         }
@@ -56,10 +166,11 @@ function renderQuestionOne() {
 
 function renderQuestionTwo() {
     questionArea.textContent = "The condition in an if/else statement is enclosed within ______."
-    //info.remove();
-    testAgain.remove();
+    correctOrIncorrectOne.remove();
+    answerListOne.remove();
     var ol = document.createElement("ol");
-    testing.appendChild(ol);
+    mainInfo.appendChild(ol);
+    ol.setAttribute("id", "answerListTwo");
 
     // Render a new li for each todo
     for (var i = 0; i < answersHolderTwo.length; i++) {
@@ -70,32 +181,161 @@ function renderQuestionTwo() {
       li.setAttribute("data-index", i);
       li.setAttribute("style", "text-align: left;");
 
-      ol.appendChild(li);
+      answerListTwo.appendChild(li);
     }
 
-    testing.addEventListener("click", function(event) {
+    mainInfo.addEventListener("click", function(event) {
       var element = event.target;
         if (element.matches("li") === true) {
           var index = element.getAttribute("data-index");
           console.log(index);
           if (index == 0) {
             var correct = document.createElement("p");
+            correct.setAttribute("id", "correctOrIncorrectTwo");
             correct.textContent = "Correct!";
-            testing.appendChild(correct);
+            mainInfo.appendChild(correct);
+            renderQuestionThree();
           } else {
             var incorrect = document.createElement("p");
+            incorrect.setAttribute("id", "correctOrIncorrectTwo");
             incorrect.textContent = "Incorrect!";
-            testing.appendChild(incorrect);
+            mainInfo.appendChild(incorrect);
+            renderQuestionThree();
           }
         }
       })
 }
 
-  testing.addEventListener("click", function(event) {
-      var element = event.target;
+function renderQuestionThree() {
+  questionArea.textContent = "Question Number Three"
+  correctOrIncorrectTwo.remove();
+  answerListTwo.remove();
+  var ol = document.createElement("ol");
+  mainInfo.appendChild(ol);
+  ol.setAttribute("id", "answerListThree");
 
-      if (element.matches("button") === true) {
-          var index = element.parentElement.getAttribute("data-index");
+  // Render a new li for each todo
+  for (var i = 0; i < answersHolderThree.length; i++) {
+    var answers = answersHolderThree[i];
 
+    var li = document.createElement("li");
+    li.textContent = answers;
+    li.setAttribute("data-index", i);
+    li.setAttribute("style", "text-align: left;");
+
+    answerListThree.appendChild(li);
+  }
+
+  mainInfo.addEventListener("click", function(event) {
+    var element = event.target;
+      if (element.matches("li") === true) {
+        var index = element.getAttribute("data-index");
+        console.log(index);
+        if (index == 0) {
+          var correct = document.createElement("p");
+          correct.setAttribute("id", "correctOrIncorrectThree");
+          correct.textContent = "Correct!";
+          mainInfo.appendChild(correct);
+          renderQuestionFour();
+        } else {
+          var incorrect = document.createElement("p");
+          incorrect.setAttribute("id", "correctOrIncorrectThree");
+          incorrect.textContent = "Incorrect!";
+          mainInfo.appendChild(incorrect);
+          renderQuestionFour();
+        }
       }
-  })
+    })
+}
+
+function renderQuestionFour() {
+  questionArea.textContent = "Question Number Four"
+  correctOrIncorrectThree.remove();
+  answerListThree.remove();
+  var ol = document.createElement("ol");
+  mainInfo.appendChild(ol);
+  ol.setAttribute("id", "answerListFour");
+
+  // Render a new li for each todo
+  for (var i = 0; i < answersHolderFour.length; i++) {
+    var answers = answersHolderFour[i];
+
+    var li = document.createElement("li");
+    li.textContent = answers;
+    li.setAttribute("data-index", i);
+    li.setAttribute("style", "text-align: left;");
+
+    answerListFour.appendChild(li);
+  }
+
+  mainInfo.addEventListener("click", function(event) {
+    var element = event.target;
+      if (element.matches("li") === true) {
+        var index = element.getAttribute("data-index");
+        console.log(index);
+        if (index == 0) {
+          var correct = document.createElement("p");
+          correct.setAttribute("id", "correctOrIncorrectFour");
+          correct.textContent = "Correct!";
+          mainInfo.appendChild(correct);
+          renderQuestionFive();
+        } else {
+          var incorrect = document.createElement("p");
+          incorrect.setAttribute("id", "correctOrIncorrectFour");
+          incorrect.textContent = "Incorrect!";
+          mainInfo.appendChild(incorrect);
+          renderQuestionFive();
+        }
+      }
+    })
+}
+
+function renderQuestionFive() {
+  questionArea.textContent = "Question Number Five"
+  correctOrIncorrectFour.remove();
+  answerListFour.remove();
+  var ol = document.createElement("ol");
+  mainInfo.appendChild(ol);
+  ol.setAttribute("id", "answerListFive");
+
+  // Render a new li for each todo
+  for (var i = 0; i < answersHolderFive.length; i++) {
+    var answers = answersHolderFive[i];
+
+    var li = document.createElement("li");
+    li.textContent = answers;
+    li.setAttribute("data-index", i);
+    li.setAttribute("style", "text-align: left;");
+
+    answerListFive.appendChild(li);
+  }
+
+  mainInfo.addEventListener("click", function(event) {
+    var element = event.target;
+      if (element.matches("li") === true) {
+        var index = element.getAttribute("data-index");
+        console.log(index);
+        if (index == 0) {
+          var correct = document.createElement("p");
+          correct.setAttribute("id", "correctOrIncorrectFive");
+          correct.textContent = "Correct!";
+          mainInfo.appendChild(correct);
+        } else {
+          var incorrect = document.createElement("p");
+          incorrect.setAttribute("id", "correctOrIncorrectFive");
+          incorrect.textContent = "Incorrect!";
+          mainInfo.appendChild(incorrect);
+        }
+      }
+    })
+}
+
+
+  // mainInfo.addEventListener("click", function(event) {
+  //     var element = event.target;
+
+  //     if (element.matches("button") === true) {
+  //         var index = element.parentElement.getAttribute("data-index");
+
+  //     }
+  // })
