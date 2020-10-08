@@ -79,7 +79,6 @@ function startTimer() {
 
 function count() {
   time--;
-  console.log(questionsCount);
   secondsDisplay.textContent = time;
   // console.log(time);
   if (time === 0) {
@@ -92,11 +91,12 @@ function count() {
       storeHighscores();
     }
   }
-  if (questionCount == 5) {
+  if (questionsCount == 5) {
     clearInterval(interval);
     timerStatus = false;
-    // renderHighscores();
-    // storeHighscores();
+    var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
+    var storedInitials = JSON.parse(localStorage.getItem("initialArray"));
+
   }
 }
 
@@ -104,8 +104,6 @@ function count() {
 function stopTimer() {
   totalSeconds = 0;
   secondsElapsed = 0;
-  setTime();
-  renderTime();
 }
 
 startButton.addEventListener("click", function(event) {  
