@@ -13,7 +13,7 @@ var interval;
 var test = 0;
 var highscoreList;
 var deletion = 0;
-var timerStatus = false;
+
 
 var goBackButton = document.createElement("button");
 var clearButton = document.createElement("button");
@@ -169,45 +169,36 @@ function renderTime() {
   }
 }
 
-// function startTimer() {
-//   setTime();
-
-//   // We only want to start the timer if totalSeconds is > 0
-//   if (totalSeconds > 0) {
-//     /* The "interval" variable here using "setInterval()" begins the recurring increment of the
-//        secondsElapsed variable which is used to check if the time is up */
-//       interval = setInterval(function() {
-//         secondsElapsed++;
-//         if (test == 1) {
-//           secondsElapsed = (secondsElapsed + 10);
-//           test--;
-//         }
-//         // So renderTime() is called here once every second.
-//         renderTime();
-//       }, 1000);
-
-//   } else if (totalSeconds === 0) {
-//     alert("Game over!");
-//   }
-// }
-
 function startTimer() {
   setTime();
 
+  // We only want to start the timer if totalSeconds is > 0
   if (totalSeconds > 0) {
-    timerStatus = true;
-    interval = setInterval(function() {
-      console.log(timerStatus);
-      secondsElapsed++;
-      console.log(secondsElapsed);
-      if (test == 1) {
-        secondsElapsed = (secondsElapsed + 10);
-        test--;
-      }
+    /* The "interval" variable here using "setInterval()" begins the recurring increment of the
+       secondsElapsed variable which is used to check if the time is up */
+      interval = setInterval(function() {
+        secondsElapsed++;
+        if (test == 1) {
+          secondsElapsed = (secondsElapsed + 10);
+          test--;
+        }
+        // So renderTime() is called here once every second.
+        renderTime();
+      }, 1000);
 
-      renderTime();
-    }, 1000);
+  } else if (totalSeconds === 0) {
+    alert("Game over!");
   }
+}
+
+var timerStatus = false;
+var timer = "";
+var time = 70;
+
+
+function startTimer() {
+  
+}
 
   if (totalSeconds <= 0) {
     timerStatus = false;
