@@ -3,27 +3,35 @@ var info = document.querySelector("#info");
 var startButton = document.querySelector("#startButton");
 var mainInfo = document.querySelector("#mainInfo");
 var secondsDisplay = document.querySelector("#seconds");
+var viewHighscores = document.querySelector("#highscoreView");
 
 
 var secondsLeft = 0;
-var totalSeconds = 70;
+var totalSeconds = 40;
 var secondsElapsed = 0;
 var interval;
 var test = 0;
 var highscoreList;
+var deletion = 0;
+var timerStatus = false;
 
 var goBackButton = document.createElement("button");
 var clearButton = document.createElement("button");
+var nextButton = document.createElement("button");
 
+var correct = document.createElement("p");
+var incorrect = document.createElement("p");
 
 var highscores = [];
 var initialArray = [];
 var initialTexts = "";
 var initialInput = "";
 
+var buttonPressCount = 0;
+var mCount = 0;
 var questionsCount = 0;
 
-var answersHolderOne = ["adsfaf", "asdfare", "adsfaf", "adsfafa"];
+var answersHolderOne = ["adsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafred", "asdfare", "adsfaf", "adsfafa"];
 var answersHolderTwo = ["123424", "42341", "3241834", "432781"];
 var answersHolderThree = ["adsfaf", "42342", "adsfaf", "32414"];
 var answersHolderFour = ["12334", "asdfadfa", "124324", "asdfadfa"];
@@ -63,18 +71,45 @@ startButton.addEventListener("click", function(event) {
   startTimer();
 });
 
+viewHighscores.addEventListener("click", function(event) {  
+  info.remove();
+  questionArea.textContent = "Highscores";
+  if (buttonPressCount == 1){
+    nextButton.remove();
+    // incorrect.remove();
+    // correct.remove();
+    buttonPressCount = 0;
+  }
+  answersList.remove();
+  var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
+
+  if (storedHighscores !== null) {
+    highscores = storedHighscores;
+  }
+
+  var storedInitials = JSON.parse(localStorage.getItem("initialArray"));
+
+  if (storedInitials !== null) {
+    initialArray = storedInitials;
+  }
+
+  for (var k = 0; k < highscores.length; k++) {
+    mCount++;
+    var hs = highscores[k];
+
+    var init = initialArray[k];
+
+    var ol = document.createElement("ol");
+    ol.textContent = (k + 1) + ") " + init + " - " + hs;
+    ol.setAttribute("id", "highscoreList");
+
+    questionArea.appendChild(ol);
+  }
+});
+
 function setTime() {
   clearInterval(interval);
   secondsDisplay.textContent = totalSeconds;
-
-  // if (status === "Working") {
-  //   minutes = workMinutesInput.value.trim();
-  // } else {
-  //   minutes = restMinutesInput.value.trim();
-  // }
-
-  // clearInterval(interval);
-  // totalSeconds = minutes * 60;
 }
 
 function getFormattedSeconds() {
@@ -94,29 +129,91 @@ function getFormattedSeconds() {
 function renderTime() {
   // When renderTime is called it sets the textContent for the timer html...
   secondsDisplay.textContent = getFormattedSeconds();
+  if (timerStatus == true) {
+      questionArea.textContent = "Highscores";
+      if (buttonPressCount == 1){
+        nextButton.remove();
+        // incorrect.remove();
+        // correct.remove();
+        buttonPressCount = 0;
+      }
+      // answersList.remove();
+      info.remove();
+      stopTimer();
 
- // ..and then checks to see if the time has run out
+      var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
+
+      if (storedHighscores !== null) {
+        highscores = storedHighscores;
+      }
+    
+      var storedInitials = JSON.parse(localStorage.getItem("initialArray"));
+    
+      if (storedInitials !== null) {
+        initialArray = storedInitials;
+      }
+      
+      for (var k = 0; k < highscores.length; k++) {
+        mCount++;
+        var hs = highscores[k];
+    
+        var init = initialArray[k];
+    
+        var ol = document.createElement("ol");
+        ol.textContent = (k + 1) + ") " + init + " - " + hs;
+        ol.setAttribute("id", "highscoreList");
+    
+        questionArea.appendChild(ol);
+      }
+      // stopTimer();
+  }
 }
+
+// function startTimer() {
+//   setTime();
+
+//   // We only want to start the timer if totalSeconds is > 0
+//   if (totalSeconds > 0) {
+//     /* The "interval" variable here using "setInterval()" begins the recurring increment of the
+//        secondsElapsed variable which is used to check if the time is up */
+//       interval = setInterval(function() {
+//         secondsElapsed++;
+//         if (test == 1) {
+//           secondsElapsed = (secondsElapsed + 10);
+//           test--;
+//         }
+//         // So renderTime() is called here once every second.
+//         renderTime();
+//       }, 1000);
+
+//   } else if (totalSeconds === 0) {
+//     alert("Game over!");
+//   }
+// }
 
 function startTimer() {
   setTime();
 
-  // We only want to start the timer if totalSeconds is > 0
   if (totalSeconds > 0) {
-    /* The "interval" variable here using "setInterval()" begins the recurring increment of the
-       secondsElapsed variable which is used to check if the time is up */
-      interval = setInterval(function() {
-        secondsElapsed++;
-        if (test == 1) {
-          secondsElapsed = (secondsElapsed + 10);
-          test--;
-        }
+    timerStatus = true;
+    interval = setInterval(function() {
+      console.log(timerStatus);
+      secondsElapsed++;
+      console.log(secondsElapsed);
+      if (test == 1) {
+        secondsElapsed = (secondsElapsed + 10);
+        test--;
+      }
 
-        // So renderTime() is called here once every second.
-        renderTime();
-      }, 1000);
-  } else {
-    alert("Minutes of work/rest must be greater than 0.")
+      renderTime();
+    }, 1000);
+  }
+
+  if (totalSeconds <= 0) {
+    timerStatus = false;
+    clearInterval(interval);
+    alert("Game over!");
+    console.log(timerStatus);
   }
 }
 
@@ -127,26 +224,11 @@ function stopTimer() {
   renderTime();
 }
 
-// function getTimePreferences() {
-//   setTime();
-//   renderTime();
-// }
-
-// function setTimePreferences() {
-//   localStorage.setItem(
-//     "preferences",
-//     JSON.stringify({
-//       workMinutes: workMinutesInput.value.trim(),
-//       restMinutes: restMinutesInput.value.trim()
-//     })
-//   );
-// }
-
-
 function renderQuestion() {
   info.remove();
   startButton.remove();
   questionArea.textContent = aqHolder[questionsCount].question;
+  questionArea.setAttribute("style", "text-align: left");
   renderAnswers(aqHolder[questionsCount].answers);
 }
 
@@ -154,6 +236,7 @@ function renderAnswers(array) {
   var ol = document.createElement("ol");
   mainInfo.appendChild(ol);
   ol.setAttribute("id", "answerList");
+  answerList.setAttribute("style", "color: white;");
 
   for (var i = 0; i < array.length; i++) {
     var answers = array[i];
@@ -161,29 +244,33 @@ function renderAnswers(array) {
     var li = document.createElement("li");
     li.textContent = answers;
     li.setAttribute("data-index", i);
-    li.setAttribute("style", "text-align: left;")
+    li.setAttribute("style", "text-align: left; margin-bottom: 10px; background-color: teal; font-size: 24px; color: white;")
 
-    answerList.appendChild(li);
+    ol.appendChild(li);
   }
 }
 
 mainInfo.addEventListener("click", function(event) {
+  buttonPressCount++;
+  console.log(buttonPressCount);
   var element = event.target;
     if (element.matches("li") === true) {
       var index = element.getAttribute("data-index");
-      console.log(index);
       if (index == aqHolder[questionsCount].correctAnswer) {
         answerList.remove();
-        var correct = document.createElement("p");
+        correct = document.createElement("p");
         correct.textContent = "Correct!";
         mainInfo.appendChild(correct);
-        var nextButton = document.createElement("button");
+        nextButton = document.createElement("button");
         
 
         mainInfo.appendChild(nextButton);
         nextButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
         nextButton.textContent = "Next Question";
         nextButton.addEventListener("click", function(event) {
+          buttonPressCount--;
+          buttonPressCount--;
+          console.log(buttonPressCount);
           correct.remove();
           questionsCount++;
           nextButton.remove();
@@ -191,15 +278,16 @@ mainInfo.addEventListener("click", function(event) {
           if (questionsCount == 5) {
             storeHighscores();
             stopTimer();
-          }
+          } else {
           renderQuestion();
+          }
         });
         
 
         
       } else {
         answerList.remove();
-        var incorrect = document.createElement("p");
+        incorrect = document.createElement("p");
         incorrect.textContent = "Incorrect!";
         mainInfo.appendChild(incorrect);
         var nextButton = document.createElement("button");
@@ -208,16 +296,19 @@ mainInfo.addEventListener("click", function(event) {
         nextButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
         nextButton.textContent = "Next Question";
         nextButton.addEventListener("click", function(event){ 
+          buttonPressCount--;
+          buttonPressCount--;
+          console.log(buttonPressCount);
           test++;
           incorrect.remove();
           questionsCount++;
           nextButton.remove();
-          console.log(questionsCount);
           if (questionsCount == 5) {
             storeHighscores();
             stopTimer();
-          }
+          } else {
           renderQuestion();
+          }
         });
       }
     }
@@ -226,12 +317,12 @@ mainInfo.addEventListener("click", function(event) {
 function getSecondsLeft() {
   // localStorage.setItem("highscores", JSON.stringify(highscores));
   var score = secondsLeft;
-  console.log(score);
   return score;
 }
 
 function renderHighscores() {
   for (var k = 0; k < highscores.length; k++) {
+    mCount++;
     var hs = highscores[k];
 
     var init = initialArray[k];
@@ -239,14 +330,17 @@ function renderHighscores() {
     var ol = document.createElement("ol");
     ol.textContent = (k + 1) + ") " + init + " - " + hs;
     ol.setAttribute("id", "highscoreList");
+    ol.setAttribute("style", "margin-top: 25px;")
 
     questionArea.appendChild(ol);
   }
 }
 
 function deleteHighscores() {
-  var highscoreListRemoval = document.querySelector("#highscoreList");
-  highscoreListRemoval.remove();
+  for (var m = 0; m < mCount; m++) {
+    var highscoreListRemoval = document.querySelector("#highscoreList");
+    highscoreListRemoval.remove();
+  }
 }
 
 function storeHighscores() {
@@ -272,6 +366,12 @@ function storeHighscores() {
   highscoreInput.setAttribute("name", "initialText");
   highscoreInput.setAttribute("id", "initialText");
 
+  // if (deletion == 1) {
+  //   highscoreLabel.remove();
+  //   highscoreInput.remove();
+  //   deletion--;
+  // }
+
   highscoreForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -290,13 +390,13 @@ function storeHighscores() {
 
     goBackButton = document.createElement("button");
     highscoreForm.appendChild(goBackButton);
-    goBackButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
+    goBackButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
     goBackButton.textContent = "Start Again";
 
 
     clearButton = document.createElement("button");
     highscoreForm.appendChild(clearButton);
-    clearButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
+    clearButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
     clearButton.textContent = "Clear Scores";
 
     goBackButton.addEventListener("click", function(event) {
@@ -310,28 +410,20 @@ function storeHighscores() {
       startTimer();
       goBackButton.remove();
       clearButton.remove();
+      
     })
     clearButton.addEventListener("click", function(event) {
       event.preventDefault();
       localStorage.clear();   
-      clearButton.remove(); 
+      clearButton.remove();
+      initialArray = [];
+      localStorage.setItem("initialArray", JSON.stringify(initialArray));
+      highscores = [];
+      localStorage.setItem("highscores", JSON.stringify(highscores));
       deleteHighscores(); 
+      answerList.remove();
     })
   })
-}
-  
-function renderGoBackButton() {
-  goBackButton = document.createElement("button");
-  highscoreForm.appendChild(goBackButton);
-  goBackButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
-  goBackButton.textContent = "Start Again";
-}
-
-function renderClearButton() {
-  clearButton = document.createElement("button");
-  highscoreForm.appendChild(clearButton);
-  clearButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
-  clearButton.textContent = "Clear Scores";
 }
 
 // clearButton.addEventListener("click", function(event) {
