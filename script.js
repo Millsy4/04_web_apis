@@ -27,15 +27,23 @@ var aqHolder = [
   {
     question: 'Question 3',
     answers: answersHolderThree,
+    correctAnswer: 0
+  },
+  {
+    question: 'Question 4',
+    answers: answersHolderFour,
     correctAnswer: 3
+  },
+  {
+    question: 'Question 5',
+    answers: answersHolderFive,
+    correctAnswer: 1
   }
 ]
 
-
-startButton.addEventListener("click", function(event) {
-  // renderQuestionOne();  
+startButton.addEventListener("click", function(event) {  
   renderQuestion();
-})
+});
 
 function renderQuestion() {
   info.remove();
@@ -58,7 +66,6 @@ function renderAnswers(array) {
     li.setAttribute("style", "text-align: left;")
 
     answerList.appendChild(li);
-
   }
 }
 
@@ -67,41 +74,46 @@ mainInfo.addEventListener("click", function(event) {
     if (element.matches("li") === true) {
       var index = element.getAttribute("data-index");
       console.log(index);
-      if (index == 0) {
-        // var correct = document.createElement("p");
-        // correct.setAttribute("id", "correctOrIncorrectOne");
-        // correct.textContent = "Correct!";
-        // mainInfo.appendChild(correct);
-        setTimeout(correctAnswer(), 1000);
-        questionsCount++;
-        answerList.remove();
-        renderQuestion();
-  
+      if (index == aqHolder[questionsCount].correctAnswer) {
+        var correct = document.createElement("p");
+        correct.textContent = "Correct!";
+        mainInfo.appendChild(correct);
+        var nextButton = document.createElement("button");
+        
+        mainInfo.appendChild(nextButton);
+        nextButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
+        nextButton.textContent = "Next Question";
+        nextButton.addEventListener("click", function(event) {
+          correct.remove();
+          questionsCount++;
+          answerList.remove();
+          nextButton.remove();
+          renderQuestion();
+          
+        });
+        mainInfo.removeEventListener();
+
         
       } else {
-        incorrectAnswer();
-        questionsCount++;
-        answerList.remove();
-        renderQuestion();
-      
+        var incorrect = document.createElement("p");
+        incorrect.textContent = "Incorrect!";
+        mainInfo.appendChild(incorrect);
+        var nextButton = document.createElement("button");
+        
+        mainInfo.appendChild(nextButton);
+        nextButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
+        nextButton.textContent = "Next Question";
+        nextButton.addEventListener("click", function(event){ 
+          incorrect.remove();
+          questionsCount++;
+          answerList.remove();
+          nextButton.remove();
+          renderQuestion();
+        });
       }
     }
-  })
+  });
 
-function correctAnswer() {
-  var correct = document.createElement("p");
-  correct.setAttribute("id", "correctOrIncorrect");
-  correct.textContent = "Correct!";
-  mainInfo.appendChild(correct);
-
-}
-
-function incorrectAnswer() {
-  var incorrect = document.createElement("p");
-  incorrect.setAttribute("id", "correctOrIncorrectOne");
-  incorrect.textContent = "Incorrect!";
-  mainInfo.appendChild(incorrect);
-}
 // function renderAnswers() {
 //   for (var i = 0; i < answersHolderOne.length; i++) {
 //     var answers = answersHolderOne[i];
