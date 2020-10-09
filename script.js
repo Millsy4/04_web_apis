@@ -39,7 +39,7 @@ var answersHolderFive = ["javascript", "terminal/bash", "for loops", "console.lo
 
 var aqHolder = [
   {
-    question: 'Commonly used data types DO NOT include:',
+    question: 'Commonly used data types DO NOT include ______.',
     answers: answersHolderOne,
     correctAnswer: 2
   },
@@ -58,8 +58,8 @@ var aqHolder = [
     answers: answersHolderFour,
     correctAnswer: 2
   },
-  
-    question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
+  {
+    question: 'A very useful tool used during development and debugging for printing content to the debugger is ______.',
     answers: answersHolderFive,
     correctAnswer: 3
   }
@@ -78,9 +78,14 @@ function startTimer() {
 }
 
 function count() {
-  time--;
+  if (deletion === 0) {
+    time--;
+  }
+  if (deletion == 1) {
+    deletion--;
+    time = (time - 10);
+  }
   secondsDisplay.textContent = time;
-  // console.log(time);
   if (time === 0) {
     
     clearInterval(interval);
@@ -99,10 +104,10 @@ function count() {
 }
 
 
-function stopTimer() {
-  totalSeconds = 0;
-  secondsElapsed = 0;
-}
+// function stopTimer() {
+//   totalSeconds = 0;
+//   secondsElapsed = 0;
+// }
 
 startButton.addEventListener("click", function(event) {  
   renderQuestion();
@@ -298,7 +303,10 @@ mainInfo.addEventListener("click", function(event) {
         mainInfo.appendChild(correctOrIncorrect);
         questionsCount++;
         if (questionsCount == 5) {
-          storeHighscores();
+          correctOrIncorrect.textContent = "Correct!";
+          mainInfo.appendChild(correctOrIncorrect);
+          setTimeout(storeHighscores, 1000);
+          //correctOrIncorrect.remove();
         } else {
           setTimeout(renderQuestion, 1000);
         }
@@ -324,6 +332,7 @@ mainInfo.addEventListener("click", function(event) {
         correctOrIncorrect.textContent = "Incorrect!";
         mainInfo.appendChild(correctOrIncorrect);
         questionsCount++;
+        deletion++;
         // var nextButton = document.createElement("button");
         
         // mainInfo.appendChild(nextButton);
@@ -338,8 +347,10 @@ mainInfo.addEventListener("click", function(event) {
         //   questionsCount++;
         //   nextButton.remove();
           if (questionsCount == 5) {
-            storeHighscores();
-            stopTimer();
+            correctOrIncorrect.textContent = "Incorrect!";
+            mainInfo.appendChild(correctOrIncorrect);
+            setTimeout(storeHighscores, 1000);
+            //correctOrIncorrect.remove();
           } else {
             setTimeout(renderQuestion, 1000);
           }
@@ -349,8 +360,7 @@ mainInfo.addEventListener("click", function(event) {
   });
 
 function getSecondsLeft() {
-  // localStorage.setItem("highscores", JSON.stringify(highscores));
-  var score = secondsLeft;
+  var score = time;
   return score;
 }
 
@@ -378,6 +388,7 @@ function deleteHighscores() {
 }
 
 function storeHighscores() {
+  correctOrIncorrect.remove();
   var holdHighscore = getSecondsLeft();
   questionArea.textContent = "Highscores";
   highscores.push(holdHighscore);
