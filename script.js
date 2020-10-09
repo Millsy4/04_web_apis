@@ -31,37 +31,37 @@ var buttonPressCount = 0;
 var mCount = 0;
 var questionsCount = 0;
 
-var answersHolderOne = ["adsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafdsfafred", "asdfare", "adsfaf", "adsfafa"];
-var answersHolderTwo = ["123424", "42341", "3241834", "432781"];
-var answersHolderThree = ["adsfaf", "42342", "adsfaf", "32414"];
-var answersHolderFour = ["12334", "asdfadfa", "124324", "asdfadfa"];
-var answersHolderFive = ["This", "Is", "A", "Test"];
+var answersHolderOne = ["strings", "booleans", "alerts", "numbers"];
+var answersHolderTwo = ["quotes", "parenthesis", "curly brackets", "square brackets"];
+var answersHolderThree = ["numbers and strings", "other arrays", "booleans", "all of the above"];
+var answersHolderFour = ["commas", "curly brackets", "quotes", "square brackets"];
+var answersHolderFive = ["javascript", "terminal/bash", "for loops", "console.log"];
 
 var aqHolder = [
   {
-    question: 'Question 1',
+    question: 'Commonly used data types DO NOT include:',
     answers: answersHolderOne,
     correctAnswer: 2
   },
   {
-    question: 'Question 2',
+    question: 'The condition in an if/else statement is enclosed within ______.',
     answers: answersHolderTwo,
     correctAnswer: 1
   },
   {
-    question: 'Question 3',
+    question: 'Arrays in Javascript can be used to store _____.',
     answers: answersHolderThree,
-    correctAnswer: 0
-  },
-  {
-    question: 'Question 4',
-    answers: answersHolderFour,
     correctAnswer: 3
   },
   {
-    question: 'Question 5',
+    question: 'String values must be enclosed within ______ when being assigned to variables.',
+    answers: answersHolderFour,
+    correctAnswer: 2
+  },
+  
+    question: 'A very useful tool used during development and debugging for printing content to the debugger is:',
     answers: answersHolderFive,
-    correctAnswer: 1
+    correctAnswer: 3
   }
 ]
 
@@ -94,8 +94,6 @@ function count() {
   if (questionsCount == 5) {
     clearInterval(interval);
     timerStatus = false;
-    var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
-    var storedInitials = JSON.parse(localStorage.getItem("initialArray"));
 
   }
 }
