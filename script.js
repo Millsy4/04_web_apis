@@ -445,11 +445,10 @@ function storeHighscores() {
     clearButton.textContent = "Clear Scores";
 
     goBackButton.addEventListener("click", function(event) {
-      secondsLeft = 0;
-      totalSeconds = 70;
-      secondsElapsed = 0;
-      interval;
-      test = 0;
+      // secondsLeft = 0;
+      time = 70;
+      // secondsElapsed = 0;
+      // test = 0;
       questionsCount = 0;
       renderQuestion();
       startTimer();
