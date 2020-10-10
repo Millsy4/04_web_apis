@@ -5,15 +5,12 @@ var mainInfo = document.querySelector("#mainInfo");
 var secondsDisplay = document.querySelector("#seconds");
 var viewHighscores = document.querySelector("#highscoreView");
 
-
-var secondsLeft = 0;
-var totalSeconds = 40;
-var secondsElapsed = 0;
 var interval;
 var test = 0;
 var highscoreList;
 var deletion = 0;
 var timerStatus = false;
+var time = 70;
 
 var goBackButton = document.createElement("button");
 var clearButton = document.createElement("button");
@@ -65,10 +62,6 @@ var aqHolder = [
   }
 ]
 
-var timerStatus = false;
-var timer = "";
-var time = 70;
-
 function startTimer() {
   
   if (!timerStatus) {
@@ -102,12 +95,6 @@ function count() {
 
   }
 }
-
-
-// function stopTimer() {
-//   totalSeconds = 0;
-//   secondsElapsed = 0;
-// }
 
 startButton.addEventListener("click", function(event) {  
   renderQuestion();
