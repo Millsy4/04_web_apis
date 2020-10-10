@@ -119,7 +119,6 @@ startButton.addEventListener("click", function(event) {
 viewHighscores.addEventListener("click", function(event) {  
   info.remove();
   questionArea.textContent = "Highscores";
-  answerList.remove();
   var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
 
   if (storedHighscores !== null) {
@@ -146,115 +145,7 @@ viewHighscores.addEventListener("click", function(event) {
   }
 });
 
-// function setTime() {
-//   clearInterval(interval);
-//   secondsDisplay.textContent = totalSeconds;
-// }
 
-// function getFormattedSeconds() {
-//   secondsLeft = (totalSeconds - secondsElapsed);
-
-//   var formattedSeconds;
-
-//   if (secondsLeft < 10) {
-//     formattedSeconds = "0" + secondsLeft;
-//   } else {
-//     formattedSeconds = secondsLeft;
-//   }
-
-//   return formattedSeconds;
-// }
-
-// function renderTime() {
-//   // When renderTime is called it sets the textContent for the timer html...
-//   secondsDisplay.textContent = getFormattedSeconds();
-//   if (totalSeconds <= 0) {
-//       questionArea.textContent = "Highscores";
-//       if (buttonPressCount == 1){
-//         nextButton.remove();
-//         // incorrect.remove();
-//         // correct.remove();
-//         buttonPressCount = 0;
-//       }
-//       // answersList.remove();
-//       info.remove();
-//       stopTimer();
-
-//       var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
-
-//       if (storedHighscores !== null) {
-//         highscores = storedHighscores;
-//       }
-    
-//       var storedInitials = JSON.parse(localStorage.getItem("initialArray"));
-    
-//       if (storedInitials !== null) {
-//         initialArray = storedInitials;
-//       }
-      
-//       for (var k = 0; k < highscores.length; k++) {
-//         mCount++;
-//         var hs = highscores[k];
-    
-//         var init = initialArray[k];
-    
-//         var ol = document.createElement("ol");
-//         ol.textContent = (k + 1) + ") " + init + " - " + hs;
-//         ol.setAttribute("id", "highscoreList");
-    
-//         questionArea.appendChild(ol);
-//       }
-//       // stopTimer();
-//   }
-// }
-
-// function startTimer() {
-//   setTime();
-
-//   // We only want to start the timer if totalSeconds is > 0
-//   if (totalSeconds > 0) {
-//     /* The "interval" variable here using "setInterval()" begins the recurring increment of the
-//        secondsElapsed variable which is used to check if the time is up */
-//       interval = setInterval(function() {
-//         secondsElapsed++;
-//         if (test == 1) {
-//           secondsElapsed = (secondsElapsed + 10);
-//           test--;
-//         }
-//         // So renderTime() is called here once every second.
-//         renderTime();
-//       }, 1000);
-
-//   } else if (totalSeconds === 0) {
-//     alert("Game over!");
-//   }
-// }
-
-// function startTimer() {
-//   setTime();
-
-//   if (totalSeconds > 0) {
-//     timerStatus = true;
-//     interval = setInterval(function() {
-//       console.log(timerStatus);
-//       secondsElapsed++;
-//       console.log(secondsElapsed);
-//       if (test == 1) {
-//         secondsElapsed = (secondsElapsed + 10);
-//         test--;
-//       }
-
-//       renderTime();
-//     }, 1000);
-//   }
-
-//   if (totalSeconds === 0) {
-//     timerStatus = false;
-//     clearInterval(interval);
-//     alert("Game over!");
-//     console.log(timerStatus);
-//   }
-// }
 
 
 
