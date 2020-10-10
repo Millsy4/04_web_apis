@@ -321,11 +321,6 @@ mainInfo.addEventListener("click", function(event) {
     }
   });
 
-function getSecondsLeft() {
-  var score = time;
-  return score;
-}
-
 function renderHighscores() {
   for (var k = 0; k < highscores.length; k++) {
     mCount++;
@@ -351,7 +346,7 @@ function deleteHighscores() {
 
 function storeHighscores() {
   correctOrIncorrect.remove();
-  var holdHighscore = getSecondsLeft();
+  var holdHighscore = time;
   questionArea.textContent = "Highscores";
   highscores.push(holdHighscore);
   holdHighscore.value = "";
@@ -373,23 +368,13 @@ function storeHighscores() {
   highscoreInput.setAttribute("name", "initialText");
   highscoreInput.setAttribute("id", "initialText");
 
-  // if (deletion == 1) {
-  //   highscoreLabel.remove();
-  //   highscoreInput.remove();
-  //   deletion--;
-  // }
-
   highscoreForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
     initialInput = document.querySelector("#initialText");
     initialTexts = initialInput.value;
     initialArray.push(initialTexts);
-    // console.log(initialTexts);
-    // console.log(initialArray);
-    // console.log(initialInput);
     localStorage.setItem("initialArray", JSON.stringify(initialArray));
-    // storeInitials();
     renderHighscores();
     highscoreLabel.remove();
     highscoreInput.remove();
@@ -407,10 +392,7 @@ function storeHighscores() {
     clearButton.textContent = "Clear Scores";
 
     goBackButton.addEventListener("click", function(event) {
-      // secondsLeft = 0;
       time = 70;
-      // secondsElapsed = 0;
-      // test = 0;
       questionsCount = 0;
       renderQuestion();
       startTimer();
