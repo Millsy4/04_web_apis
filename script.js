@@ -114,8 +114,6 @@ startButton.addEventListener("click", function(event) {
   startTimer();
 });
 
-
-
 viewHighscores.addEventListener("click", function(event) {  
   info.remove();
   questionArea.textContent = "Highscores";
@@ -130,9 +128,8 @@ viewHighscores.addEventListener("click", function(event) {
   if (storedInitials !== null) {
     initialArray = storedInitials;
   }
-
+  console.log(mCount);
   for (var k = 0; k < highscores.length; k++) {
-    mCount++;
     var hs = highscores[k];
 
     var init = initialArray[k];
@@ -144,10 +141,6 @@ viewHighscores.addEventListener("click", function(event) {
     questionArea.appendChild(ol);
   }
 });
-
-
-
-
 
 function renderQuestion() {
   info.remove();
@@ -213,8 +206,9 @@ mainInfo.addEventListener("click", function(event) {
   });
 
 function renderHighscores() {
+  mCount++;
+  console.log(mCount);
   for (var k = 0; k < highscores.length; k++) {
-    mCount++;
     var hs = highscores[k];
 
     var init = initialArray[k];
@@ -300,7 +294,8 @@ function storeHighscores() {
       highscores = [];
       localStorage.setItem("highscores", JSON.stringify(highscores));
       deleteHighscores(); 
-      answerList.remove();
+      // answerList.remove();
+      mCount = 0;
     })
   })
 }
