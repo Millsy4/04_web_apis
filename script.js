@@ -21,11 +21,11 @@ var nextButton = document.createElement("button");
 
 var correctOrIncorrect = document.createElement("p");
 
-
 var highscores = [];
 var initialArray = [];
 var initialTexts = "";
 var initialInput = "";
+
 
 var buttonPressCount = 0;
 var mCount = 0;
@@ -119,13 +119,7 @@ startButton.addEventListener("click", function(event) {
 viewHighscores.addEventListener("click", function(event) {  
   info.remove();
   questionArea.textContent = "Highscores";
-  if (buttonPressCount == 1){
-    nextButton.remove();
-    // incorrect.remove();
-    // correct.remove();
-    buttonPressCount = 0;
-  }
-  answersList.remove();
+  answerList.remove();
   var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
 
   if (storedHighscores !== null) {
@@ -292,8 +286,6 @@ function renderAnswers(array) {
 }
 
 mainInfo.addEventListener("click", function(event) {
-  buttonPressCount++;
-  // console.log(buttonPressCount);
   var element = event.target;
     if (element.matches("li") === true) {
       var index = element.getAttribute("data-index");
@@ -306,24 +298,9 @@ mainInfo.addEventListener("click", function(event) {
           correctOrIncorrect.textContent = "Correct!";
           mainInfo.appendChild(correctOrIncorrect);
           setTimeout(storeHighscores, 1000);
-          //correctOrIncorrect.remove();
         } else {
           setTimeout(renderQuestion, 1000);
         }
-
-        // nextButton = document.createElement("button");
-        // mainInfo.appendChild(nextButton);
-        // nextButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
-        // nextButton.textContent = "Next Question";
-        // nextButton.addEventListener("click", function(event) {
-        //   buttonPressCount--;
-        //   buttonPressCount--;
-        //   console.log(buttonPressCount);
-        //   correct.remove();
-          
-        //   nextButton.remove();
-        //   console.log(questionsCount);
-        // });
         
 
         
@@ -333,28 +310,13 @@ mainInfo.addEventListener("click", function(event) {
         mainInfo.appendChild(correctOrIncorrect);
         questionsCount++;
         deletion++;
-        // var nextButton = document.createElement("button");
-        
-        // mainInfo.appendChild(nextButton);
-        // nextButton.setAttribute("class", "btn btn-info ml-auto mr-auto");
-        // nextButton.textContent = "Next Question";
-        // nextButton.addEventListener("click", function(event){ 
-        //   buttonPressCount--;
-        //   buttonPressCount--;
-        //   console.log(buttonPressCount);
-        //   test++;
-        //   incorrect.remove();
-        //   questionsCount++;
-        //   nextButton.remove();
           if (questionsCount == 5) {
             correctOrIncorrect.textContent = "Incorrect!";
             mainInfo.appendChild(correctOrIncorrect);
             setTimeout(storeHighscores, 1000);
-            //correctOrIncorrect.remove();
           } else {
             setTimeout(renderQuestion, 1000);
           }
-        // });
       }
     }
   });
