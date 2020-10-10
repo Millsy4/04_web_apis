@@ -14,8 +14,6 @@ var time = 70;
 
 var goBackButton = document.createElement("button");
 var clearButton = document.createElement("button");
-var nextButton = document.createElement("button");
-
 var correctOrIncorrect = document.createElement("p");
 
 var highscores = [];
@@ -23,8 +21,9 @@ var initialArray = [];
 var initialTexts = "";
 var initialInput = "";
 
-
-var buttonPressCount = 0;
+var goBackButtonCheck = false;
+var clearButtonCheck = false;
+var answersListCheck = false;
 var mCount = 0;
 var questionsCount = 0;
 
@@ -63,7 +62,6 @@ var aqHolder = [
 ]
 
 function startTimer() {
-  
   if (!timerStatus) {
     interval = setInterval(count, 1000);
     timerStatus = true;
@@ -80,7 +78,6 @@ function count() {
   }
   secondsDisplay.textContent = time;
   if (time === 0) {
-    
     clearInterval(interval);
     timerStatus = false;
     if (questionsCount != 5) {
@@ -92,7 +89,6 @@ function count() {
   if (questionsCount == 5) {
     clearInterval(interval);
     timerStatus = false;
-
   }
 }
 
@@ -104,6 +100,17 @@ startButton.addEventListener("click", function(event) {
 viewHighscores.addEventListener("click", function(event) {  
   info.remove();
   questionArea.textContent = "Highscores";
+  console.log(goBackButtonCheck);
+  console.log(clearButtonCheck);
+
+  if (answersListCheck === true) {
+    answerList.remove();
+    clearInterval(interval);
+    timerStatus = false;
+    // storeHighscores();
+    answersListCheck = false;
+  }
+
   var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
 
   if (storedHighscores !== null) {
@@ -115,6 +122,7 @@ viewHighscores.addEventListener("click", function(event) {
   if (storedInitials !== null) {
     initialArray = storedInitials;
   }
+
   console.log(mCount);
   for (var k = 0; k < highscores.length; k++) {
     var hs = highscores[k];
@@ -127,9 +135,26 @@ viewHighscores.addEventListener("click", function(event) {
 
     questionArea.appendChild(ol);
   }
+
+  if (goBackButtonCheck === false) {
+    goBackButton = document.createElement("button");
+    questionArea.appendChild(goBackButton);
+    goBackButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
+    goBackButton.textContent = "Start Again";
+    goBackButtonCheck = true;
+  }
+
+  if (clearButtonCheck === false) {
+    clearButton = document.createElement("button");
+    questionArea.appendChild(clearButton);
+    clearButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
+    clearButton.textContent = "Clear Scores";
+    clearButtonCheck = true;
+  }
 });
 
 function renderQuestion() {
+  answersListCheck = true;
   info.remove();
   startButton.remove();
   correctOrIncorrect.remove();
@@ -165,32 +190,32 @@ mainInfo.addEventListener("click", function(event) {
         correctOrIncorrect.textContent = "Correct!";
         mainInfo.appendChild(correctOrIncorrect);
         questionsCount++;
-        if (questionsCount == 5) {
+      if (questionsCount == 5) {
+          answersListCheck = false;
           correctOrIncorrect.textContent = "Correct!";
           mainInfo.appendChild(correctOrIncorrect);
           setTimeout(storeHighscores, 1000);
-        } else {
-          setTimeout(renderQuestion, 1000);
-        }
-        
-
-        
       } else {
+        setTimeout(renderQuestion, 1000);
+      }
+        
+    } else {
         answerList.remove();
         correctOrIncorrect.textContent = "Incorrect!";
         mainInfo.appendChild(correctOrIncorrect);
         questionsCount++;
         deletion++;
-          if (questionsCount == 5) {
-            correctOrIncorrect.textContent = "Incorrect!";
-            mainInfo.appendChild(correctOrIncorrect);
-            setTimeout(storeHighscores, 1000);
-          } else {
+        if (questionsCount == 5) {
+          answersListCheck = false;
+          correctOrIncorrect.textContent = "Incorrect!";
+          mainInfo.appendChild(correctOrIncorrect);
+          setTimeout(storeHighscores, 1000);
+        } else {
             setTimeout(renderQuestion, 1000);
-          }
-      }
-    }
-  });
+        }
+  }
+ }
+});
 
 function renderHighscores() {
   mCount++;
@@ -218,6 +243,7 @@ function deleteHighscores() {
 
 function storeHighscores() {
   correctOrIncorrect.remove();
+
   var holdHighscore = time;
   questionArea.textContent = "Highscores";
   highscores.push(holdHighscore);
@@ -270,6 +296,8 @@ function storeHighscores() {
       startTimer();
       goBackButton.remove();
       clearButton.remove();
+      goBackButtonCheck = false;
+      clearButtonCheck = false;
       
     })
     clearButton.addEventListener("click", function(event) {
@@ -281,8 +309,32 @@ function storeHighscores() {
       highscores = [];
       localStorage.setItem("highscores", JSON.stringify(highscores));
       deleteHighscores(); 
-      // answerList.remove();
       mCount = 0;
+      clearButtonCheck = false;
     })
   })
 }
+
+goBackButton.addEventListener("click", function(event) {
+  time = 70;
+  questionsCount = 0;
+  renderQuestion();
+  startTimer();
+  goBackButton.remove();
+  clearButton.remove();
+  goBackButtonCheck = false;
+  clearButtonCheck = false;
+})
+
+clearButton.addEventListener("click", function(event) {
+  event.preventDefault();
+  localStorage.clear();   
+  clearButton.remove();
+  initialArray = [];
+  localStorage.setItem("initialArray", JSON.stringify(initialArray));
+  highscores = [];
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+  deleteHighscores(); 
+  mCount = 0;
+  clearButtonCheck = false;
+})
