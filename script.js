@@ -1,3 +1,4 @@
+// Initialize variables to hold selections
 var questionArea = document.querySelector("#questionArea");
 var info = document.querySelector("#info");
 var startButton = document.querySelector("#startButton");
@@ -5,6 +6,7 @@ var mainInfo = document.querySelector("#mainInfo");
 var secondsDisplay = document.querySelector("#seconds");
 var viewHighscores = document.querySelector("#highscoreView");
 
+// Initialize variables that will be used for the timer
 var interval;
 var test = 0;
 var highscoreList;
@@ -12,27 +14,32 @@ var deletion = 0;
 var timerStatus = false;
 var time = 70;
 
+// Initialize variables for dynamic elements to use later
 var goBackButton = document.createElement("button");
 var clearButton = document.createElement("button");
 var correctOrIncorrect = document.createElement("p");
 
+// Initialize variables that will hold information
 var highscores = [];
 var initialArray = [];
 var initialTexts = "";
 var initialInput = "";
 
+// Initialize variables that will be used for counting and booleans within functions
 var goBackButtonCheck = false;
 var clearButtonCheck = false;
 var answersListCheck = false;
 var mCount = 0;
 var questionsCount = 0;
 
+// Create variables that hold the arrays for all of the answers
 var answersHolderOne = ["strings", "booleans", "alerts", "numbers"];
 var answersHolderTwo = ["quotes", "parenthesis", "curly brackets", "square brackets"];
 var answersHolderThree = ["numbers and strings", "other arrays", "booleans", "all of the above"];
 var answersHolderFour = ["commas", "curly brackets", "quotes", "square brackets"];
 var answersHolderFive = ["javascript", "terminal/bash", "for loops", "console.log"];
 
+// This creates a variable that will hold all of the questions and answers
 var aqHolder = [
   {
     question: 'Commonly used data types DO NOT include ______.',
@@ -61,6 +68,7 @@ var aqHolder = [
   }
 ]
 
+// This function starts the timer at an interval of 1000 milliseconds (1 second)
 function startTimer() {
   if (!timerStatus) {
     interval = setInterval(count, 1000);
@@ -68,6 +76,7 @@ function startTimer() {
   }
 }
 
+// This function controls the countdown on the timer
 function count() {
   if (deletion === 0) {
     time--;
@@ -92,11 +101,13 @@ function count() {
   }
 }
 
+// Creates a function that allows the user to click the start button and start the quiz
 startButton.addEventListener("click", function(event) {  
   renderQuestion();
   startTimer();
 });
 
+// Creates a function that allows the user to click the view highscores button
 viewHighscores.addEventListener("click", function(event) {  
   info.remove();
   questionArea.textContent = "Highscores";
@@ -107,23 +118,24 @@ viewHighscores.addEventListener("click", function(event) {
     answerList.remove();
     clearInterval(interval);
     timerStatus = false;
-    // storeHighscores();
     answersListCheck = false;
   }
 
+  // Check for locally stored high scores and assigns them to a variable, but only if they exist
   var storedHighscores = JSON.parse(localStorage.getItem("highscores"));
 
   if (storedHighscores !== null) {
     highscores = storedHighscores;
   }
 
+  // Check for locally stored initials and assigns them to a variable, but only if they exist
   var storedInitials = JSON.parse(localStorage.getItem("initialArray"));
 
   if (storedInitials !== null) {
     initialArray = storedInitials;
   }
 
-  console.log(mCount);
+ 
   for (var k = 0; k < highscores.length; k++) {
     var hs = highscores[k];
 
@@ -136,23 +148,24 @@ viewHighscores.addEventListener("click", function(event) {
     questionArea.appendChild(ol);
   }
 
-  if (goBackButtonCheck === false) {
-    goBackButton = document.createElement("button");
-    questionArea.appendChild(goBackButton);
-    goBackButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
-    goBackButton.textContent = "Start Again";
-    goBackButtonCheck = true;
-  }
+  // if (goBackButtonCheck === false) {
+  //   goBackButton = document.createElement("button");
+  //   questionArea.appendChild(goBackButton);
+  //   goBackButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
+  //   goBackButton.textContent = "Start Again";
+  //   goBackButtonCheck = true;
+  // }
 
-  if (clearButtonCheck === false) {
-    clearButton = document.createElement("button");
-    questionArea.appendChild(clearButton);
-    clearButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
-    clearButton.textContent = "Clear Scores";
-    clearButtonCheck = true;
-  }
+  // if (clearButtonCheck === false) {
+  //   clearButton = document.createElement("button");
+  //   questionArea.appendChild(clearButton);
+  //   clearButton.setAttribute("class", "btn btn-info ml-auto mr-auto mt-3");
+  //   clearButton.textContent = "Clear Scores";
+  //   clearButtonCheck = true;
+  // }
 });
 
+// Create a function that will render a question and remove unnecessary information
 function renderQuestion() {
   answersListCheck = true;
   info.remove();
@@ -163,6 +176,7 @@ function renderQuestion() {
   renderAnswers(aqHolder[questionsCount].answers);
 }
 
+// Createa a function that will render answers
 function renderAnswers(array) {
   var ol = document.createElement("ol");
   mainInfo.appendChild(ol);
@@ -181,6 +195,7 @@ function renderAnswers(array) {
   }
 }
 
+// Creates a function that allows the user to click answers to select them
 mainInfo.addEventListener("click", function(event) {
   var element = event.target;
     if (element.matches("li") === true) {
@@ -217,6 +232,7 @@ mainInfo.addEventListener("click", function(event) {
  }
 });
 
+// Create a function that will render the highscores
 function renderHighscores() {
   mCount++;
   console.log(mCount);
@@ -234,6 +250,7 @@ function renderHighscores() {
   }
 }
 
+// Create a function that deletes the highscores from the list
 function deleteHighscores() {
   for (var m = 0; m < mCount; m++) {
     var highscoreListRemoval = document.querySelector("#highscoreList");
@@ -241,6 +258,7 @@ function deleteHighscores() {
   }
 }
 
+// Create a function that will store the highscores in local storage
 function storeHighscores() {
   correctOrIncorrect.remove();
 
